@@ -5,11 +5,13 @@ Website： www.crazyziye.top
 license：GPL
 Created DATE: 29/9/21 10:34 pm
 """
-import sys
 import time
 
 
 class Log:
+    """
+    Log class is to imitate the log classification system of android studio to help users debug.
+    """
 
     def __init__(self, text: str, category: str, line: int):
         """
@@ -26,7 +28,7 @@ class Log:
 
         self.style = [0, 1, 4, 5, 7, 22, 24, 25, 27]
         self.color = [30, 31, 32, 33, 34, 35, 36, 37]
-        self.bg = [40, 41, 42, 43, 44, 45, 46, 47]
+        self.background = [40, 41, 42, 43, 44, 45, 46, 47]
         self.text = text
         self.category = category
         self.line = line
@@ -34,21 +36,31 @@ class Log:
                         'debug',
                         'warning',
                         'info']
+        self.run()
 
+    def run(self):
+        """
+        Start function
+        :return: func
+        """
         if self.category.lower() not in self.command:
             raise ValueError('ERROR: wrong category for log!!!')
-        elif self.category.lower() == 'error':
-            self.__ERROR()
+        if self.category.lower() == 'error':
+            self.__error()
         elif self.category.lower() == 'debug':
-            self.__DEBUG()
+            self.__debug()
         elif self.category.lower() == 'warning':
-            self.__WARNING()
+            self.__warning()
         elif self.category.lower() == 'info':
-            self.__INFO()
+            self.__info()
 
     @staticmethod
-    def __GET_TIME():
-        Time = "[" + \
+    def get_time():
+        """
+        getting system time.
+        :return: time
+        """
+        time_return = "[" + \
                str(time.localtime(time.time()).tm_year) + "/" + \
                str(time.localtime(time.time()).tm_mon) + "/" + \
                str(time.localtime(time.time()).tm_mday) + "{" + \
@@ -57,9 +69,9 @@ class Log:
                str(time.localtime(time.time()).tm_sec) + "}" + \
                "]"
 
-        return Time
+        return time_return
 
-    def __INFO(self, style=1, bg=40, color=33):
+    def __info(self, style=1, background=40, color=33):
         """
 
         :param style:0 (default),
@@ -71,7 +83,7 @@ class Log:
                      24 (non-underline),
                      25 (non-flashing),
                      27 (non-reversed)
-        :param bg: 40 (black),
+        :param background: 40 (black),
                    41 (red),
                    42 (green),
                    43 (yellow),
@@ -91,16 +103,16 @@ class Log:
         """
         if style not in self.style:
             raise ValueError("wrong style number!!!")
-        if bg not in self.bg:
+        if background not in self.background:
             raise ValueError("wrong background color number!!!")
         if color not in self.color:
             raise ValueError("wrong text color number!!!")
         print('\033[' + str(style) + ';' +
               str(color) + ';' +
-              str(bg) + 'm' + "[" + str(self.line) + "]" + str(self.__GET_TIME()) +
+              str(background) + 'm' + "[" + str(self.line) + "]" + str(self.get_time()) +
               "INFO:" + self.text + '\033[0m')
 
-    def __ERROR(self, style=1, bg=40, color=35):
+    def __error(self, style=1, background=40, color=35):
         """
 
         :param style:0 (default),
@@ -112,7 +124,7 @@ class Log:
                      24 (non-underline),
                      25 (non-flashing),
                      27 (non-reversed)
-        :param bg: 40 (black),
+        :param background: 40 (black),
                    41 (red),
                    42 (green),
                    43 (yellow),
@@ -132,17 +144,17 @@ class Log:
         """
         if style not in self.style:
             raise ValueError("wrong style number!!!")
-        if bg not in self.bg:
+        if background not in self.background:
             raise ValueError("wrong background color number!!!")
         if color not in self.color:
             raise ValueError("wrong text color number!!!")
 
         print('\033[' + str(style) + ';' +
               str(color) + ';' +
-              str(bg) + 'm' + "[" + str(self.line) + "]" + str(self.__GET_TIME()) +
+              str(background) + 'm' + "[" + str(self.line) + "]" + str(self.get_time()) +
               "ERROR:" + self.text + '\033[0m')
 
-    def __DEBUG(self, style=1, bg=40, color=32):
+    def __debug(self, style=1, background=40, color=32):
         """
 
         :param style:0 (default),
@@ -154,7 +166,7 @@ class Log:
                      24 (non-underline),
                      25 (non-flashing),
                      27 (non-reversed)
-        :param bg: 40 (black),
+        :param background: 40 (black),
                    41 (red),
                    42 (green),
                    43 (yellow),
@@ -174,17 +186,17 @@ class Log:
         """
         if style not in self.style:
             raise ValueError("wrong style number!!!")
-        if bg not in self.bg:
+        if background not in self.background:
             raise ValueError("wrong background color number!!!")
         if color not in self.color:
             raise ValueError("wrong text color number!!!")
 
         print('\033[' + str(style) + ';' +
               str(color) + ';' +
-              str(bg) + 'm' + "[" + str(self.line) + "]" + str(self.__GET_TIME()) +
+              str(background) + 'm' + "[" + str(self.line) + "]" + str(self.get_time()) +
               "DEBUG:" + self.text + '\033[0m')
 
-    def __WARNING(self, style=1, bg=40, color=36):
+    def __warning(self, style=1, background=40, color=36):
         """
 
         :param style:0 (default),
@@ -196,7 +208,7 @@ class Log:
                      24 (non-underline),
                      25 (non-flashing),
                      27 (non-reversed)
-        :param bg: 40 (black),
+        :param background: 40 (black),
                    41 (red),
                    42 (green),
                    43 (yellow),
@@ -216,25 +228,12 @@ class Log:
         """
         if style not in self.style:
             raise ValueError("wrong style number!!!")
-        if bg not in self.bg:
+        if background not in self.background:
             raise ValueError("wrong background color number!!!")
         if color not in self.color:
             raise ValueError("wrong text color number!!!")
 
         print('\033[' + str(style) + ';' +
               str(color) + ';' +
-              str(bg) + 'm' + "[" + str(self.line) + "]" + str(self.__GET_TIME()) +
+              str(background) + 'm' + "[" + str(self.line) + "]" + str(self.get_time()) +
               "WARNING:" + self.text + '\033[0m')
-
-
-# A = {'a': 1}
-# try:
-#     A[2]
-# except Exception:
-#     system = sys.exc_info()
-#     Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)
-#
-Log('debug','info',sys._getframe().f_lineno)
-Log('debug','error',sys._getframe().f_lineno)
-Log('debug','warning',sys._getframe().f_lineno)
-Log('debug','debug',sys._getframe().f_lineno)
