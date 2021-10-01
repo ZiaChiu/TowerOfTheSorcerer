@@ -5,6 +5,7 @@ Website： www.crazyziye.top
 license：GPL
 Created DATE: 29/9/21 10:34 pm
 """
+import sys
 import time
 
 
@@ -237,3 +238,4 @@ class Log:
               str(color) + ';' +
               str(background) + 'm' + "[" + str(self.line) + "]" + str(self.get_time()) +
               "WARNING:" + self.text + '\033[0m')
+
