@@ -55,6 +55,8 @@ class Log:
         elif self.category.lower() == 'info':
             self.__info()
 
+    def __str__(self):
+        return self.text
     @staticmethod
     def get_time():
         """
