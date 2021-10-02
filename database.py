@@ -1,9 +1,9 @@
 """
-Author : ZIYE ZHAO
+Author : ZIA CHIU
 EMAIL: admin@crazyziye.xyz
 Website： www.crazyziye.top
 license：GPL
-Created DATE: 1/10/21 2:54 pm
+Created DATE: 29/9/21 10:34 pm
 """
 import sqlite3
 import sys
@@ -46,7 +46,7 @@ class Data:
         except ValueError as v_error:
             Log(str(v_error), 'error', sys.exc_info()[2].tb_lineno)
 
-        Log('Query finished', 'info', sys._getframe().f_lineno) #
+        Log('Query finished', 'info', sys._getframe().f_lineno)  # pylint: disable=W0212
 
     @contracts.contract
     def data_query_batch(self, sql, value=None):
@@ -61,8 +61,7 @@ class Data:
         #         Sql only should be
         #         'sql="'select (?) from (?)'",value=[(row_name,table_name)]'
         try:
-            self.cursor.executemany(sql,value)
-
+            self.cursor.executemany(sql, value)
 
         except sqlite3.Error:
             system = sys.exc_info()
@@ -72,7 +71,7 @@ class Data:
         except ValueError as v_error:
             Log(str(v_error), 'error', sys.exc_info()[2].tb_lineno)
 
-        Log('Query finished', 'info', sys._getframe().f_lineno)
+        Log('Query finished', 'info', sys._getframe().f_lineno)  # pylint: disable=W0212
 
     @contracts.contract
     def add_data(self, table_name: str, data_list: tuple):
@@ -86,7 +85,7 @@ class Data:
         """
 
         __sql = 'insert into "{}" values "{}"'.format(table_name, data_list)
-        self.data_query(__sql)
+        self.data_query_batch(__sql)
 
     def update_data(self, table_name: str, data_list: tuple):
         __sql = 'update '
