@@ -127,7 +127,7 @@ class Data:
             Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
 
     @contracts.contract
-    def update_data(self, table_name: str, value_list: list):
+    def update_all(self, table_name: str, value_list: list):
         """
         This is the function used to execute SQLite's update statement.
 
@@ -168,8 +168,6 @@ class Data:
         for row in rows:
             row_list.append(row[1])
 
-        Log(str(row_list), 'debug', sys._getframe().f_lineno)  # pylint: disable=W0212
-
         try:
             if len(value_list) != len(row_list):
                 raise _DatabaseError("The length of value_list does not match the length of db！！！")
@@ -188,6 +186,69 @@ class Data:
             system = sys.exc_info()
             Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
 
+    @contracts.contract
+    def update_row(self, table_name: str,ID,row_list:list, value_list: list):
+        """
+        This is the function used to execute SQLite's update statement.
+
+        :param ID: the primary_key 's value of db's table.
+        :type row_list:list[]
+        :type table_name:str
+        :type value_list:list[id]
+        # value_list should looks like [,column1,column2...columnN]
+        """
+        try:
+            pass
+        except contracts.ContractSyntaxError:
+            system = sys.exc_info()
+            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
+
+        try:
+            table = "'" + table_name + "'"
+            tables = self.__cursor. \
+                execute(f'SELECT count(*) FROM sqlite_master WHERE type="table" AND name = {table}').fetchone()
+            self.__database.commit()
+            if tables[0] == 0:
+                Log(str(tables), 'debug', sys._getframe().f_lineno)  # pylint: disable=W0212
+                raise _DatabaseError('table does not exist in db！！')
+        except sqlite3.Error:
+            system = sys.exc_info()
+            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
+        except _DatabaseError as db_error:
+            Log(db_error.__str__(), 'error', sys.exc_info()[2].tb_lineno)  # pylint: disable=W0212
+
+        try:
+            row_names = f"PRAGMA table_info([{table_name}])"
+            row_check = self.__cursor.execute(row_names).fetchall()
+            self.__database.commit()
+            Log(str(row_check), 'info', sys._getframe().f_lineno)  # pylint: disable=W0212
+        except sqlite3.Error:
+            system = sys.exc_info()
+            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
+
+        rows = self.__cursor.execute(f"PRAGMA table_info([{table_name}])").fetchone()
+        # row_list = []
+        # for row in rows:
+        #     row_list.append(row[1])
+
+        try:
+            if len(value_list) != len(row_list):
+                raise _DatabaseError("The length of value_list does not match the length of db！！！")
+        except _DatabaseError:
+            system = sys.exc_info()
+            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
+
+        value_dict = dict(zip(row_list, value_list))
+
+        Log(str(value_dict), 'debug', sys._getframe().f_lineno)  # pylint: disable=W0212
+        try:
+            for value in value_dict:
+                sql = f'update {table_name} SET {value}={value_dict[value]} where {rows[1]}={ID}'
+                self.data_query(sql)
+        except sqlite3.Error:
+            system = sys.exc_info()
+            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
+
     def closing_db(self):
         self.__cursor.close()
         self.__database.close()
@@ -195,4 +256,5 @@ class Data:
 
 db = Data()
 
-db.update_data(table_name="hero", id_row_name='name', value_list=["'Zia'", 0, 1, 1000, 10, 10, 10, 10, 10, 10])
+# db.update_all(table_name="hero", value_list=["'Zia'", 0, 1, 1000, 10, 10, 10, 10, 10, 10])
+# db.update_row(table_name='hero', ID="'Zia'",row_list=['exp','gold'],value_list=[100,100])
