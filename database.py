@@ -94,7 +94,7 @@ class Data:
             pass
         except contracts.ContractException:
             system = sys.exc_info()
-            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
+            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)
         check_sql = f'select * from {table_name}'
         data_value = self.__cursor.execute(check_sql)
         data_format = data_value.fetchone()
@@ -121,11 +121,11 @@ class Data:
             Log('Query finished', 'info', sys._getframe().f_lineno)  # pylint: disable=W0212
 
         except _DatabaseError as db_error:
-            Log(db_error.__str__(), category='error', line=sys.exc_info()[2].tb_lineno)  # pylint: disable=W0212
+            Log(db_error.__str__(), category='error', line=sys.exc_info()[2].tb_lineno)
 
         except sqlite3.Error:
             system = sys.exc_info()
-            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
+            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)
 
     @contracts.contract
     def update_all(self, table_name: str, value_list: list):
@@ -141,7 +141,7 @@ class Data:
             pass
         except contracts.ContractSyntaxError:
             system = sys.exc_info()
-            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
+            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)
 
         # Check if the table name exists.
         try:
@@ -151,13 +151,12 @@ class Data:
                         f'WHERE type="table" AND name = {table}').fetchone()
             self.__database.commit()
             if tables[0] == 0:
-                Log(str(tables), 'debug', sys._getframe().f_lineno)  # pylint: disable=W0212
                 raise _DatabaseError('table does not exist in db！！')
         except sqlite3.Error:
             system = sys.exc_info()
-            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
+            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)
         except _DatabaseError as db_error:
-            Log(db_error.__str__(), 'error', sys.exc_info()[2].tb_lineno)  # pylint: disable=W0212
+            Log(db_error.__str__(), 'error', sys.exc_info()[2].tb_lineno)
 
         rows = self.__cursor.execute(f"PRAGMA table_info([{table_name}])").fetchall()
         row_list = []
@@ -171,7 +170,7 @@ class Data:
                 raise _DatabaseError("The length of value_list does not match the length of db！！！")
         except _DatabaseError:
             system = sys.exc_info()
-            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
+            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)
 
         value_dict = dict(zip(row_list, value_list))
         # update db
@@ -183,7 +182,7 @@ class Data:
                 self.data_query(sql)
         except sqlite3.Error:
             system = sys.exc_info()
-            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
+            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)
 
     @contracts.contract
     def update_row(self, table_name: str,
@@ -210,7 +209,7 @@ class Data:
             pass
         except contracts.ContractSyntaxError:
             system = sys.exc_info()
-            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
+            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)
 
         # Intercepted db Errors from SQLite3 database
         # Intercepted the _DatabaseError error
@@ -225,7 +224,7 @@ class Data:
                 raise _DatabaseError('table does not exist in db！！')
         except sqlite3.Error:
             system = sys.exc_info()
-            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
+            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)
         except _DatabaseError as db_error:
             Log(db_error.__str__(), 'error', sys.exc_info()[2].tb_lineno)  # pylint: disable=W0212
 
@@ -236,7 +235,7 @@ class Data:
                 raise _DatabaseError("The length of value_list does not match the length of db！！！")
         except _DatabaseError:
             system = sys.exc_info()
-            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
+            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)
 
         value_dict = dict(zip(row_list, value_list))
 
@@ -250,7 +249,7 @@ class Data:
                 self.data_query(sql)
         except sqlite3.Error:
             system = sys.exc_info()
-            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)  # pylint: disable=W0212
+            Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)
 
     def closing_db(self):
         """ Close the connection with the database"""
