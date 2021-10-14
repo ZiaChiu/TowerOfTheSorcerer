@@ -57,6 +57,7 @@ class Log:
 
     def __str__(self):
         return self.text
+
     @staticmethod
     def get_time():
         """
@@ -64,17 +65,17 @@ class Log:
         :return: time
         """
         time_return = "[" + \
-               str(time.localtime(time.time()).tm_year) + "/" + \
-               str(time.localtime(time.time()).tm_mon) + "/" + \
-               str(time.localtime(time.time()).tm_mday) + "{" + \
-               str(time.localtime(time.time()).tm_hour) + ":" + \
-               str(time.localtime(time.time()).tm_min) + ":" + \
-               str(time.localtime(time.time()).tm_sec) + "}" + \
-               "]"
+                      str(time.localtime(time.time()).tm_year) + "/" + \
+                      str(time.localtime(time.time()).tm_mon) + "/" + \
+                      str(time.localtime(time.time()).tm_mday) + "{" + \
+                      str(time.localtime(time.time()).tm_hour) + ":" + \
+                      str(time.localtime(time.time()).tm_min) + ":" + \
+                      str(time.localtime(time.time()).tm_sec) + "}" + \
+                      "]"
 
         return time_return
 
-    def __info(self, style=1, background=40, color=33):
+    def __info(self, style=1, background=40, color=31):
         """
 
         :param style:0 (default),
@@ -115,7 +116,7 @@ class Log:
               str(background) + 'm' + "[" + str(self.line) + "]" + str(self.get_time()) +
               "INFO:" + self.text + '\033[0m')
 
-    def __error(self, style=1, background=40, color=35):
+    def __error(self, style=4, background=40, color=37):
         """
 
         :param style:0 (default),
@@ -241,3 +242,5 @@ class Log:
               str(background) + 'm' + "[" + str(self.line) + "]" + str(self.get_time()) +
               "WARNING:" + self.text + '\033[0m')
 
+
+L = Log('Hello world','error',sys._getframe().f_lineno)
