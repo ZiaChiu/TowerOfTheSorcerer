@@ -1,5 +1,4 @@
 contracts>=0.1.0
 PyContracts>=1.8.12
-pyqt5>=5.15.4
-pyqt5-tools>=5.15.4.3.2
 pylint>=2.11.1
+Pillow
