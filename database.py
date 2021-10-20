@@ -39,7 +39,7 @@ class Data:
         self.__cursor = self.__database.cursor()
 
     @contracts.contract
-    def data_query(self, sql, value=None):
+    def __data_query(self, sql, value=None):
         # example: self.data_query(sql="select * from hero")
         """
         This is a function to upload one sql statement to database.
@@ -82,6 +82,12 @@ class Data:
         Log('Query finished', 'info', sys._getframe().f_lineno)  # pylint: disable=W0212
 
     @contracts.contract
+    def get_row(self, row_name: str, tableName, primaryKeyName, keyValue: str):
+        sqlKeyValue = '"' + keyValue + '"'
+        sql = f'select {row_name} from {tableName} where {primaryKeyName}={sqlKeyValue}'
+        data = self.__cursor.execute(sql).fetchone()
+        return data
+
     def add_value(self, table_name: str, value_list: list):
         """
         :param table_name:
@@ -179,7 +185,7 @@ class Data:
                 sql = f'update {table_name} ' \
                       f'SET {value}={value_dict[value]} ' \
                       f'where {row_list[0]}={value_list[0]}'
-                self.data_query(sql)
+                self.__data_query(sql)
         except sqlite3.Error:
             system = sys.exc_info()
             Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)
@@ -246,7 +252,7 @@ class Data:
             for value in value_dict:
                 sql = f'update {table_name} SET {value}={value_dict[value]} ' \
                       f'where {rows[1]}={primary_id}'
-                self.data_query(sql)
+                self.__data_query(sql)
         except sqlite3.Error:
             system = sys.exc_info()
             Log(str(system[0]) + str(system[1]), category='error', line=system[2].tb_lineno)
@@ -255,3 +261,7 @@ class Data:
         """ Close the connection with the database"""
         self.__cursor.close()
         self.__database.close()
+
+
+db = Data()
+print(str(db.get_row('name', 'hero', 'name', 'Zia')))
